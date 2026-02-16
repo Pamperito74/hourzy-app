@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vault Migration Integration</title>
+    <style>
+      body { font-family: sans-serif; margin: 16px; }
+      .ok { color: #14532d; }
+      .err { color: #7f1d1d; }
+      code { background: #f4f6f8; padding: 2px 4px; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1>Vault Migration Integration</h1>
+    <p id="summary" class="err">Running...</p>
+    <ol id="logs"></ol>
+
+    <script type="module">
+      import {
+        initDb,
+        ensureDefaults,
+        getAll,
+        putOne,
+        getVaultStatus,
+        enableAtRestEncryption,
+        lockAtRestEncryption,
+        unlockAtRestEncryption,
+        disableAtRestEncryption,
+        resetCorruptedVaultData
+      } from '../js/db.js';
+      import { defaultSettings } from '../js/state.js';
+
+      const summary = document.getElementById('summary');
+      const logs = document.getElementById('logs');
+
+      function log(text, ok = true) {
+        const li = document.createElement('li');
+        li.className = ok ? 'ok' : 'err';
+        li.textContent = text;
+        logs.append(li);
+      }
+
+      function assert(condition, message) {
+        if (!condition) throw new Error(message);
+      }
+
+      async function run() {
+        const passphrase = 'integration-passphrase-123';
+        let step = 'start';
+        const watchdog = setTimeout(() => {
+          log(`Watchdog timeout at step: ${step}`, false);
+          summary.textContent = `FAIL: watchdog timeout at ${step}`;
+          summary.className = 'err';
+          summary.dataset.status = 'fail';
+          document.title = 'FAIL Vault Migration Integration';
+        }, 30000);
+
+        step = 'initDb';
+        await initDb();
+        step = 'resetVault';
+        await resetCorruptedVaultData();
+        log('Reset vault/db state');
+        step = 'ensureDefaults';
+        await ensureDefaults(defaultSettings);
+        log('Database initialized and defaults ensured');
+
+        const now = Date.now();
+        step = 'seed-project';
+        await putOne('projects', {
+          id: 'p-int-1',
+          name: 'Integration Project',
+          hourlyRate: 100,
+          archived: false,
+          createdAtMs: now,
+          updatedAtMs: now
+        });
+        step = 'seed-entry';
+        await putOne('entries', {
+          id: 'e-int-1',
+          projectId: 'p-int-1',
+          note: 'Integration entry',
+          startUtcMs: now - 3600000,
+          endUtcMs: now,
+          durationMs: 3600000,
+          source: 'manual',
+          createdAtMs: now,
+          updatedAtMs: now
+        });
+        log('Seeded plaintext project/entry rows');
+
+        step = 'read-before-enable';
+        let rows = await getAll('entries');
+        assert(rows.length === 1, 'Expected one entry before encryption enable');
+        log('Verified plaintext read before encryption enable');
+
+        step = 'enable';
+        await enableAtRestEncryption(passphrase);
+        let status = await getVaultStatus();
+        assert(status.enabled === true, 'Vault should be enabled after enableAtRestEncryption');
+        assert(status.unlocked === true, 'Vault should be unlocked immediately after enable');
+        log('Enabled encrypted-at-rest mode');
+
+        step = 'read-after-enable';
+        rows = await getAll('entries');
+        assert(rows.length === 1, 'Expected one entry after encryption enable');
+        assert(rows[0].id === 'e-int-1', 'Entry id mismatch after encryption enable');
+        log('Verified encrypted read after enable');
+
+        step = 'lock';
+        lockAtRestEncryption();
+        status = await getVaultStatus();
+        assert(status.enabled === true, 'Vault should stay enabled after lock');
+        assert(status.unlocked === false, 'Vault should report locked');
+        log('Locked vault session');
+
+        step = 'read-while-locked';
+        let lockedError = false;
+        try {
+          await getAll('entries');
+        } catch {
+          lockedError = true;
+        }
+        assert(lockedError, 'Expected locked vault read to fail');
+        log('Verified locked vault blocks protected reads');
+
+        step = 'unlock';
+        await unlockAtRestEncryption(passphrase);
+        step = 'read-after-unlock';
+        rows = await getAll('entries');
+        assert(rows.length === 1 && rows[0].id === 'e-int-1', 'Unlock should restore access to encrypted rows');
+        log('Unlocked vault and verified data');
+
+        step = 'disable';
+        await disableAtRestEncryption(passphrase);
+        status = await getVaultStatus();
+        assert(status.enabled === false, 'Vault should be disabled');
+        rows = await getAll('entries');
+        assert(rows.length === 1 && rows[0].id === 'e-int-1', 'Disable should restore plaintext rows');
+        log('Disabled vault and verified plaintext migration');
+        clearTimeout(watchdog);
+
+        summary.textContent = 'PASS';
+        summary.className = 'ok';
+        summary.dataset.status = 'pass';
+        document.title = 'PASS Vault Migration Integration';
+      }
+
+      run().catch((error) => {
+        log(error.message || String(error), false);
+        summary.textContent = `FAIL: ${error.message || error}`;
+        summary.className = 'err';
+        summary.dataset.status = 'fail';
+        document.title = 'FAIL Vault Migration Integration';
+      });
+    </script>
+  </body>
+</html>

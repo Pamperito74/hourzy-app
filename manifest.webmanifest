@@ -1,0 +1,17 @@
+{
+  "name": "Hourzy",
+  "short_name": "Hourzy",
+  "description": "Private, local-first work-hours tracking.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#0c7a6a",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Crect width='192' height='192' rx='30' fill='%230c7a6a'/%3E%3Ctext x='50%25' y='56%25' font-size='88' text-anchor='middle' fill='white' font-family='Arial'%3EH%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

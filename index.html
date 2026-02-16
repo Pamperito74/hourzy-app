@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c7a6a" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'" />
+    <meta name="description" content="Hourzy: private, local-first work-hours tracking." />
+    <title>Hourzy v1</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div id="app" class="app-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <h1 class="brand">Hourzy</h1>
+          <p class="tagline">Track hours, not overhead.</p>
+        </div>
+        <div class="row">
+          <div id="lockBanner" class="banner" aria-live="polite" hidden></div>
+          <button id="logoutBtn" hidden>Logout</button>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Primary">
+        <button class="tab is-active" data-view="tracker">Tracker</button>
+        <button class="tab" data-view="entries">Entries</button>
+        <button class="tab" data-view="export">Export</button>
+        <button class="tab" data-view="settings">Settings</button>
+      </nav>
+
+      <main id="main" class="content" tabindex="-1"></main>
+    </div>
+
+    <input id="importFileInput" class="sr-only" type="file" accept="application/json" />
+    <input id="tabularFileInput" class="sr-only" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

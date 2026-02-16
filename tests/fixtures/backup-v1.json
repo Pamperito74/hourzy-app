@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "schemaVersion": 1,
+  "encrypted": false,
+  "exportedAt": "2026-02-16T08:00:00.000Z",
+  "data": {
+    "projects": [
+      {
+        "id": "proj-a",
+        "name": "Client A",
+        "hourlyRate": 85,
+        "archived": false,
+        "createdAtMs": 1760313600000,
+        "updatedAtMs": 1760313600000
+      }
+    ],
+    "entries": [
+      {
+        "id": "entry-a",
+        "projectId": "proj-a",
+        "note": "Design review",
+        "startUtcMs": 1760320800000,
+        "endUtcMs": 1760324400000,
+        "durationMs": 3600000,
+        "source": "manual",
+        "createdAtMs": 1760324400000,
+        "updatedAtMs": 1760324400000
+      }
+    ],
+    "settings": [
+      {
+        "id": "default",
+        "timezone": "America/New_York",
+        "weekStartsOn": 1,
+        "roundingMinutes": 0,
+        "idleDetectionEnabled": false,
+        "dailyReminderEnabled": false,
+        "encryptionEnabled": false,
+        "vaultAutoLockMinutes": 15
+      }
+    ],
+    "timer": null
+  },
+  "checksum": "07308d9d2188c0b02d86ddc24a31b61f2705a534a5239db1a359e2a97841f8f1"
+}
