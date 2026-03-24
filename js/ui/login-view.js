@@ -1,5 +1,4 @@
 import { loginWithPassword } from '../auth.js';
-import { nukeAllLocalData } from '../db.js';
 import { notify } from '../notify.js';
 
 export function renderLoginView(root, { onLoginSuccess }) {
@@ -48,12 +47,14 @@ export function renderLoginView(root, { onLoginSuccess }) {
   revealBtn.type = 'button';
   revealBtn.className = 'reveal-btn';
   revealBtn.setAttribute('aria-label', 'Show password');
-  revealBtn.textContent = '👁';
+  revealBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
   revealBtn.addEventListener('click', () => {
     const showing = passInput.type === 'text';
     passInput.type = showing ? 'password' : 'text';
     revealBtn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
-    revealBtn.textContent = showing ? '👁' : '🙈';
+    revealBtn.innerHTML = showing
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
   });
   passWrap.append(passInput, revealBtn);
   passField.append(passLabel, passWrap);
@@ -64,22 +65,8 @@ export function renderLoginView(root, { onLoginSuccess }) {
   loginBtn.style.cssText = 'width:100%;padding:12px;font-size:0.95rem;margin-top:4px;';
   loginBtn.textContent = 'Sign in';
 
-  const resetWrap = document.createElement('p');
-  resetWrap.className = 'reset-hint';
-  const resetLink = document.createElement('button');
-  resetLink.type = 'button';
-  resetLink.className = 'link-btn';
-  resetLink.textContent = 'Reset all local data';
-  resetLink.addEventListener('click', async () => {
-    const confirmed = window.confirm('This will permanently delete all local Hourzy data and reload. Continue?');
-    if (!confirmed) return;
-    await nukeAllLocalData();
-    location.reload();
-  });
-  resetWrap.append(resetLink);
-
   form.append(userField, passField, loginBtn);
-  card.append(title, sub, form, resetWrap);
+  card.append(title, sub, form);
   wrap.append(card);
   root.append(wrap);
 
