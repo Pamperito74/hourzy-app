@@ -42,11 +42,7 @@ export function renderLoginView(root, { onLoginSuccess }) {
   loginBtn.type = 'submit';
   loginBtn.textContent = 'Login';
 
-  const seedHint = document.createElement('p');
-  seedHint.className = 'muted';
-  seedHint.textContent = 'Initial seed: superadmin / SuperAdmin1234!!!!';
-
-  form.append(userField, passField, loginBtn, seedHint);
+  form.append(userField, passField, loginBtn);
   card.append(title, hint, form);
   root.append(card);
 
