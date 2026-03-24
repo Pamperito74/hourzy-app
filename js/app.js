@@ -1,4 +1,5 @@
 import { ensureAuthBootstrap, clearAuthSession, getAuthSession } from './auth.js';
+import { initTheme } from './theme.js';
 import { getVaultStatus, initDb, lockAtRestEncryption, resetCorruptedVaultData, unlockAtRestEncryption } from './db.js';
 import { loadInitialState, setState, subscribe, getState } from './state.js';
 import { notify } from './notify.js';
@@ -222,6 +223,7 @@ function bindLogout() {
 }
 
 async function boot() {
+  initTheme();
   await initDb();
   await ensureAuthBootstrap();
   bindTabs();

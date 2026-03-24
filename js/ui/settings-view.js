@@ -1,3 +1,4 @@
+import { THEMES, applyTheme, getSavedTheme } from '../theme.js';
 import { upsertProject } from '../entries.js';
 import { changeOwnPassword, createUser, deleteUser, getAuthSession, listUsers, resetUserPassword } from '../auth.js';
 import { disableAtRestEncryption, enableAtRestEncryption, getVaultStatus, lockAtRestEncryption, pruneEntriesBefore, resetCorruptedVaultData, unlockAtRestEncryption } from '../db.js';
@@ -768,10 +769,55 @@ export function renderSettingsView(root) {
   renderSupport().catch(() => {});
   supportCard.append(supportTitle, supportBody, supportRefresh);
 
+  // --- Theme picker ---
+  const themeCard = document.createElement('section');
+  themeCard.className = 'card';
+  const themeTitle = document.createElement('h2');
+  themeTitle.textContent = 'Appearance';
+  const themeGrid = document.createElement('div');
+  themeGrid.className = 'theme-grid';
+
+  let activeTheme = getSavedTheme();
+
+  THEMES.forEach((t) => {
+    const btn = document.createElement('button');
+    btn.className = 'theme-swatch' + (t.id === activeTheme ? ' is-active' : '');
+    btn.setAttribute('aria-label', `Switch to ${t.name} theme`);
+    btn.type = 'button';
+
+    const preview = document.createElement('div');
+    preview.className = 'theme-preview';
+    t.preview.forEach((color) => {
+      const dot = document.createElement('div');
+      dot.className = 'theme-preview-dot';
+      dot.style.background = color;
+      preview.append(dot);
+    });
+
+    const name = document.createElement('div');
+    name.className = 'theme-name';
+    name.textContent = t.name;
+
+    const desc = document.createElement('div');
+    desc.className = 'theme-desc';
+    desc.textContent = t.description;
+
+    btn.append(preview, name, desc);
+    btn.addEventListener('click', () => {
+      applyTheme(t.id);
+      activeTheme = t.id;
+      themeGrid.querySelectorAll('.theme-swatch').forEach((s) => s.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+    themeGrid.append(btn);
+  });
+
+  themeCard.append(themeTitle, themeGrid);
+
   if (usersCard) {
-    wrap.append(appSettingsCard, projectCard, usersCard, dataCard, privacyCard, supportCard);
+    wrap.append(themeCard, appSettingsCard, projectCard, usersCard, dataCard, privacyCard, supportCard);
   } else {
-    wrap.append(appSettingsCard, projectCard, dataCard, privacyCard, supportCard);
+    wrap.append(themeCard, appSettingsCard, projectCard, dataCard, privacyCard, supportCard);
   }
   root.append(wrap);
 }

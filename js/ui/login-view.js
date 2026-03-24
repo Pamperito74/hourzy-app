@@ -3,14 +3,18 @@ import { nukeAllLocalData } from '../db.js';
 import { notify } from '../notify.js';
 
 export function renderLoginView(root, { onLoginSuccess }) {
+  const wrap = document.createElement('div');
+  wrap.className = 'login-wrap';
+
   const card = document.createElement('section');
-  card.className = 'card';
+  card.className = 'login-card';
 
   const title = document.createElement('h2');
-  title.textContent = 'Sign In';
-  const hint = document.createElement('p');
-  hint.className = 'muted';
-  hint.textContent = 'Use your local Hourzy credentials to continue.';
+  title.textContent = 'Welcome back';
+
+  const sub = document.createElement('p');
+  sub.className = 'login-sub';
+  sub.textContent = 'Sign in with your local Hourzy credentials.';
 
   const form = document.createElement('form');
   form.className = 'grid';
@@ -24,6 +28,7 @@ export function renderLoginView(root, { onLoginSuccess }) {
   userInput.id = 'loginUsername';
   userInput.required = true;
   userInput.autocomplete = 'username';
+  userInput.placeholder = 'Enter username';
   userField.append(userLabel, userInput);
 
   const passField = document.createElement('div');
@@ -38,6 +43,7 @@ export function renderLoginView(root, { onLoginSuccess }) {
   passInput.type = 'password';
   passInput.required = true;
   passInput.autocomplete = 'current-password';
+  passInput.placeholder = '••••••••';
   const revealBtn = document.createElement('button');
   revealBtn.type = 'button';
   revealBtn.className = 'reveal-btn';
@@ -55,10 +61,11 @@ export function renderLoginView(root, { onLoginSuccess }) {
   const loginBtn = document.createElement('button');
   loginBtn.className = 'primary';
   loginBtn.type = 'submit';
-  loginBtn.textContent = 'Login';
+  loginBtn.style.cssText = 'width:100%;padding:12px;font-size:0.95rem;margin-top:4px;';
+  loginBtn.textContent = 'Sign in';
 
   const resetWrap = document.createElement('p');
-  resetWrap.className = 'muted reset-hint';
+  resetWrap.className = 'reset-hint';
   const resetLink = document.createElement('button');
   resetLink.type = 'button';
   resetLink.className = 'link-btn';
@@ -72,18 +79,23 @@ export function renderLoginView(root, { onLoginSuccess }) {
   resetWrap.append(resetLink);
 
   form.append(userField, passField, loginBtn);
-  card.append(title, hint, form, resetWrap);
-  root.append(card);
+  card.append(title, sub, form, resetWrap);
+  wrap.append(card);
+  root.append(wrap);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Signing in…';
     try {
       await loginWithPassword(userInput.value, passInput.value);
       passInput.value = '';
-      notify('Login successful.', 'success');
+      notify('Welcome back.', 'success');
       await onLoginSuccess();
     } catch (error) {
       passInput.value = '';
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Sign in';
       notify(error.message || 'Login failed.', 'error');
     }
   });
