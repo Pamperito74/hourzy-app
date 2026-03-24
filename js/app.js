@@ -6,6 +6,8 @@ import { notify } from './notify.js';
 import { renderTrackerView } from './ui/tracker-view.js';
 import { renderEntriesView } from './ui/entries-view.js';
 import { renderExportView } from './ui/export-view.js';
+import { renderReportsView } from './ui/reports-view.js';
+import { renderInvoiceView } from './ui/invoice-view.js';
 import { renderSettingsView } from './ui/settings-view.js';
 import { renderLoginView } from './ui/login-view.js';
 import { initTimerEngine } from './timer.js';
@@ -71,15 +73,16 @@ function render() {
     return;
   }
 
-  if (state.ui.activeView === 'tracker') {
-    renderTrackerView(main);
-  } else if (state.ui.activeView === 'entries') {
-    renderEntriesView(main);
-  } else if (state.ui.activeView === 'export') {
-    renderExportView(main);
-  } else if (state.ui.activeView === 'settings') {
-    renderSettingsView(main);
-  }
+  const viewRenderers = new Map([
+    ['tracker', renderTrackerView],
+    ['entries', renderEntriesView],
+    ['export', renderExportView],
+    ['reports', renderReportsView],
+    ['invoices', renderInvoiceView],
+    ['settings', renderSettingsView]
+  ]);
+  const renderer = viewRenderers.get(state.ui.activeView);
+  if (renderer) renderer(main);
 }
 
 function bindTabs() {

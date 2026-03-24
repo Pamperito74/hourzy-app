@@ -130,6 +130,23 @@ export function splitDurationsByBucket(entries, settings) {
   return { day, week, month };
 }
 
+export function splitDurationsByProject(entries) {
+  const map = new Map();
+  for (const entry of entries) {
+    const key = entry.projectId || null;
+    map.set(key, (map.get(key) || 0) + Math.max(0, entry.durationMs || 0));
+  }
+  return map;
+}
+
+export function currentWeekKey(settings) {
+  return weekStartKey(Date.now(), settings.timezone, settings.weekStartsOn);
+}
+
+export function currentMonthKey(settings) {
+  return monthKey(Date.now(), settings.timezone);
+}
+
 export const __totalsInternals = {
   zonedDateTimeToUtcMs,
   nextLocalMidnightUtcMs
