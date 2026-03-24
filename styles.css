@@ -143,7 +143,7 @@ h2 {
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 /* ============================================================
@@ -187,7 +187,7 @@ h2 {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
 }
 
 .brand-wrap {
@@ -228,8 +228,8 @@ h2 {
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 20px;
+  gap: 4px;
+  margin-top: 22px;
   padding-bottom: 2px;
   border-bottom: 1px solid var(--line);
 }
@@ -238,10 +238,10 @@ h2 {
   border: none;
   background: transparent;
   border-radius: var(--radius-sm);
-  padding: 6px 14px;
+  padding: 8px 16px;
   color: var(--muted);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   cursor: pointer;
   position: relative;
   transition: color 0.15s ease, background 0.15s ease;
@@ -273,7 +273,7 @@ h2 {
    ============================================================ */
 
 .content {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 /* ============================================================
@@ -285,8 +285,8 @@ h2 {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 20px;
-  margin-bottom: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -330,7 +330,7 @@ h2 {
 
 .grid {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .grid.two {
@@ -446,6 +446,12 @@ button.danger:hover:not(:disabled) {
 button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+/* Primary submit button at bottom of a form gets extra top breathing room */
+form > button.primary,
+form > button[type="submit"].primary {
+  margin-top: 4px;
 }
 
 :focus-visible {
@@ -675,6 +681,71 @@ th {
   font-size: 0.75rem;
   color: var(--muted);
   margin-top: -4px;
+}
+
+/* ============================================================
+   SECTION SEPARATOR (within cards)
+   ============================================================ */
+
+.section-sep {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 20px 0;
+}
+
+/* ============================================================
+   CARD SECTION LABEL (sub-headings within a card)
+   ============================================================ */
+
+.card h3 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+/* ============================================================
+   SMALL BUTTON (for inline list actions)
+   ============================================================ */
+
+button.sm {
+  padding: 5px 11px;
+  font-size: 0.82rem;
+}
+
+/* ============================================================
+   BUTTON GROUP (logical action clusters)
+   ============================================================ */
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-group {
+  display: grid;
+  gap: 8px;
+}
+
+.action-group + .action-group {
+  margin-top: 0;
+}
+
+/* ============================================================
+   LIST HEADER (label above a list inside a card)
+   ============================================================ */
+
+.list-header {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
 
 /* ============================================================

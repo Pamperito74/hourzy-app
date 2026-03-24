@@ -133,6 +133,7 @@ export function renderEntriesView(root) {
     rowActions.className = 'row';
 
     const editBtn = document.createElement('button');
+    editBtn.className = 'sm';
     editBtn.textContent = 'Edit';
     editBtn.addEventListener('click', async () => {
       const patch = await editEntryDialog({
@@ -148,7 +149,7 @@ export function renderEntriesView(root) {
     });
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'danger';
+    deleteBtn.className = 'danger sm';
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', async () => {
       const confirmed = await confirmDialog({

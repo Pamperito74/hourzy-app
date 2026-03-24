@@ -91,12 +91,8 @@ export function getAuthSession() {
 export async function ensureAuthBootstrap() {
   await initDb();
   const users = await getAll('users');
-  console.debug('[auth] ensureAuthBootstrap: users in DB:', users.length, users.map(u => u.username));
   const hasSuperadmin = users.some((u) => String(u.username).toLowerCase() === USERNAME_SUPERADMIN);
-  if (hasSuperadmin) {
-    console.debug('[auth] superadmin already exists, skipping seed');
-    return;
-  }
+  if (hasSuperadmin) return;
 
   const now = Date.now();
   const password = await hashPassword(DEFAULT_SUPERADMIN_PASSWORD);
@@ -112,22 +108,17 @@ export async function ensureAuthBootstrap() {
     updatedAtMs: now
   };
   await putOne('users', superadmin);
-  console.debug('[auth] superadmin seeded successfully');
 }
 
 export async function loginWithPassword(username, password) {
   const safeUsername = sanitizeText(String(username || ''), 64).toLowerCase();
-  console.debug('[auth] login attempt for:', safeUsername);
   if (!safeUsername || !password) throw new Error('Username and password are required.');
 
   const users = await getAll('users');
-  console.debug('[auth] users in DB at login time:', users.length, users.map(u => u.username));
   const user = users.find((u) => String(u.username).toLowerCase() === safeUsername);
-  console.debug('[auth] user found:', Boolean(user), 'isActive:', user?.isActive);
   if (!user || !user.isActive) throw new Error('Invalid credentials.');
 
   const ok = await verifyPassword(password, user);
-  console.debug('[auth] password verify result:', ok);
   if (!ok) throw new Error('Invalid credentials.');
 
   const session = {

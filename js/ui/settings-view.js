@@ -247,6 +247,12 @@ export function renderSettingsView(root) {
 
   pForm.append(nameField, rateField, addBtn);
 
+  const projectListSep = document.createElement('hr');
+  projectListSep.className = 'section-sep';
+  const projectListLabel = document.createElement('p');
+  projectListLabel.className = 'list-header';
+  projectListLabel.textContent = state.projects.length ? `Projects (${state.projects.length})` : 'No projects yet';
+
   const list = document.createElement('div');
   list.className = 'list';
   for (const project of state.projects) {
@@ -263,6 +269,7 @@ export function renderSettingsView(root) {
     main.append(n, meta);
 
     const archiveBtn = document.createElement('button');
+    archiveBtn.className = 'sm';
     archiveBtn.textContent = project.archived ? 'Unarchive' : 'Archive';
     archiveBtn.addEventListener('click', async () => {
       await upsertProject({
@@ -292,7 +299,7 @@ export function renderSettingsView(root) {
     }
   });
 
-  projectCard.append(pTitle, pForm, list);
+  projectCard.append(pTitle, pForm, projectListSep, projectListLabel, list);
 
   let usersCard = null;
   if (session?.role === 'superadmin') {
@@ -478,10 +485,20 @@ export function renderSettingsView(root) {
     });
 
     renderUsers().catch(() => {});
+    const resetSep = document.createElement('hr');
+    resetSep.className = 'section-sep';
+    const deleteSep = document.createElement('hr');
+    deleteSep.className = 'section-sep';
+    const userListSep = document.createElement('hr');
+    userListSep.className = 'section-sep';
+    const userListLabel = document.createElement('p');
+    userListLabel.className = 'list-header';
+    userListLabel.textContent = 'All Users';
+
     uForm.append(uNameField, uRoleField, uPassField, createBtn);
     resetForm.append(resetTitle, resetUserField, resetPassField, resetBtn);
     deleteForm.append(deleteTitle, deleteUserField, deleteBtn);
-    usersCard.append(uTitle, uForm, resetForm, deleteForm, userList);
+    usersCard.append(uTitle, uForm, resetSep, resetForm, deleteSep, deleteForm, userListSep, userListLabel, userList);
   }
 
   const dataCard = document.createElement('section');
@@ -492,22 +509,57 @@ export function renderSettingsView(root) {
   dText.className = 'muted';
   dText.textContent = 'Importing backup will replace current local data.';
 
-  const dataActions = document.createElement('div');
-  dataActions.className = 'row';
+  // Import group
+  const importGroup = document.createElement('div');
+  importGroup.className = 'action-group';
+  const importGroupLabel = document.createElement('p');
+  importGroupLabel.className = 'list-header';
+  importGroupLabel.textContent = 'Import';
+  const importGroupBtns = document.createElement('div');
+  importGroupBtns.className = 'btn-group';
   const importBtn = document.createElement('button');
   importBtn.textContent = 'Import JSON Backup';
   const importTabularBtn = document.createElement('button');
-  importTabularBtn.textContent = 'Import CSV/Excel';
+  importTabularBtn.textContent = 'Import CSV / Excel';
   const templateBtn = document.createElement('button');
   templateBtn.textContent = 'Download CSV Template';
+  importGroupBtns.append(importBtn, importTabularBtn, templateBtn);
+  importGroup.append(importGroupLabel, importGroupBtns);
+
+  // Maintenance group
+  const sep1 = document.createElement('hr');
+  sep1.className = 'section-sep';
+  const maintenanceGroup = document.createElement('div');
+  maintenanceGroup.className = 'action-group';
+  const maintenanceLabel = document.createElement('p');
+  maintenanceLabel.className = 'list-header';
+  maintenanceLabel.textContent = 'Maintenance';
+  const maintenanceBtns = document.createElement('div');
+  maintenanceBtns.className = 'btn-group';
   const pruneBtn = document.createElement('button');
   pruneBtn.textContent = 'Prune Old Entries';
+  maintenanceBtns.append(pruneBtn);
+  maintenanceGroup.append(maintenanceLabel, maintenanceBtns);
+
+  // Encryption group
+  const sep2 = document.createElement('hr');
+  sep2.className = 'section-sep';
+  const encryptionGroup = document.createElement('div');
+  encryptionGroup.className = 'action-group';
+  const encryptionLabel = document.createElement('p');
+  encryptionLabel.className = 'list-header';
+  encryptionLabel.textContent = 'Local Encryption';
+  const encryptionBtns = document.createElement('div');
+  encryptionBtns.className = 'btn-group';
   const vaultBtn = document.createElement('button');
   vaultBtn.textContent = 'Loading vault state...';
   vaultBtn.disabled = true;
   const recoverBtn = document.createElement('button');
   recoverBtn.className = 'danger';
   recoverBtn.textContent = 'Reset Corrupted Vault';
+  encryptionBtns.append(vaultBtn, recoverBtn);
+  encryptionGroup.append(encryptionLabel, encryptionBtns);
+
   const fileInput = document.getElementById('importFileInput');
   const tabularInput = document.getElementById('tabularFileInput');
 
@@ -624,8 +676,7 @@ export function renderSettingsView(root) {
     await refreshVaultButton();
   });
 
-  dataActions.append(importBtn, importTabularBtn, templateBtn, pruneBtn, vaultBtn, recoverBtn);
-  dataCard.append(dTitle, dText, dataActions);
+  dataCard.append(dTitle, dText, importGroup, sep1, maintenanceGroup, sep2, encryptionGroup);
 
   const refreshVaultButton = async () => {
     const status = await getVaultStatus();

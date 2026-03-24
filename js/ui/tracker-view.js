@@ -140,6 +140,7 @@ export function renderTrackerView(root) {
     actionsWrap.className = 'list-actions';
 
     const editBtn = document.createElement('button');
+    editBtn.className = 'sm';
     editBtn.textContent = 'Edit';
     editBtn.addEventListener('click', async () => {
       const patch = await editEntryDialog({
@@ -155,7 +156,7 @@ export function renderTrackerView(root) {
     });
 
     const delBtn = document.createElement('button');
-    delBtn.className = 'danger';
+    delBtn.className = 'danger sm';
     delBtn.textContent = 'Delete';
     delBtn.addEventListener('click', async () => {
       const confirmed = await confirmDialog({
