@@ -145,12 +145,12 @@ body {
 
 .input-reveal input {
   flex: 1;
-  padding-right: 40px;
+  padding-right: 72px;
 }
 
 .reveal-btn {
   position: absolute;
-  right: 2px;
+  right: 36px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
