@@ -35,7 +35,7 @@ export function renderTrackerView(root) {
   const totalTodayMs = buckets.day.get(dateKey(Date.now(), state.settings.timezone)) || 0;
 
   const wrap = document.createElement('div');
-  wrap.className = 'grid two';
+  wrap.className = 'grid three';
 
   const timerCard = document.createElement('section');
   timerCard.className = 'card';
@@ -241,7 +241,17 @@ export function renderTrackerView(root) {
   form.append(manualProjectField, startField, endField, manualNoteField, saveBtn);
   manualCard.append(manualTitle, form);
 
+  const pageHeader = document.createElement('div');
+  const pageTitle = document.createElement('h1');
+  pageTitle.className = 'page-title';
+  pageTitle.textContent = 'Tracker';
+  const pageSub = document.createElement('p');
+  pageSub.className = 'page-subtitle';
+  pageSub.textContent = "Today's session at a glance.";
+  pageHeader.append(pageTitle, pageSub);
+
   wrap.append(timerCard, todayCard, manualCard);
+  root.append(pageHeader, wrap);
 
   projectSelect.addEventListener('change', async () => {
     await updateTimerDraft({ projectId: projectSelect.value || null });
@@ -289,5 +299,4 @@ export function renderTrackerView(root) {
     }
   });
 
-  root.append(wrap);
 }

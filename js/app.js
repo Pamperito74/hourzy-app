@@ -12,7 +12,7 @@ import { initTimerEngine } from './timer.js';
 import { passphraseDialog } from './ui/dialogs.js';
 
 const main = document.getElementById('main');
-const tabsWrap = document.querySelector('.tabs');
+const sidebar = document.querySelector('.sidebar');
 const tabs = Array.from(document.querySelectorAll('[data-view]'));
 const lockBanner = document.getElementById('lockBanner');
 const logoutBtn = document.getElementById('logoutBtn');
@@ -22,7 +22,7 @@ let runtimeStarted = false;
 
 function setAuthenticatedUi(session) {
   const loggedIn = Boolean(session);
-  tabsWrap.hidden = !loggedIn;
+  sidebar.hidden = !loggedIn;
   logoutBtn.hidden = !loggedIn;
 }
 

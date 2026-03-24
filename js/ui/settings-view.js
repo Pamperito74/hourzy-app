@@ -24,13 +24,10 @@ export function renderSettingsView(root) {
   const state = getState();
   const session = getAuthSession();
 
-  const wrap = document.createElement('div');
-  wrap.className = 'grid two';
-
   const appSettingsCard = document.createElement('section');
   appSettingsCard.className = 'card';
   const title = document.createElement('h2');
-  title.textContent = 'General Settings';
+  title.textContent = 'General';
 
   const form = document.createElement('form');
   form.className = 'grid';
@@ -49,7 +46,7 @@ export function renderSettingsView(root) {
   wsField.className = 'field';
   const wsLabel = document.createElement('label');
   wsLabel.htmlFor = 'setWeekStart';
-  wsLabel.textContent = 'Week Starts On';
+  wsLabel.textContent = 'Week starts on';
   const wsSelect = document.createElement('select');
   wsSelect.id = 'setWeekStart';
   const optMon = document.createElement('option');
@@ -104,7 +101,7 @@ export function renderSettingsView(root) {
   autoLockField.className = 'field';
   const autoLockLabel = document.createElement('label');
   autoLockLabel.htmlFor = 'setVaultAutoLock';
-  autoLockLabel.textContent = 'Vault Auto-Lock (minutes)';
+  autoLockLabel.textContent = 'Vault auto-lock (minutes)';
   const autoLockInput = document.createElement('input');
   autoLockInput.id = 'setVaultAutoLock';
   autoLockInput.type = 'number';
@@ -117,7 +114,7 @@ export function renderSettingsView(root) {
   const saveBtn = document.createElement('button');
   saveBtn.className = 'primary';
   saveBtn.type = 'submit';
-  saveBtn.textContent = 'Save Settings';
+  saveBtn.textContent = 'Save settings';
 
   form.append(tzField, wsField, roundingField, idleField, reminderField, autoLockField, saveBtn);
 
@@ -143,7 +140,7 @@ export function renderSettingsView(root) {
   const accountCard = document.createElement('section');
   accountCard.className = 'card';
   const accountTitle = document.createElement('h2');
-  accountTitle.textContent = 'Account Security';
+  accountTitle.textContent = 'Change password';
   const accountForm = document.createElement('form');
   accountForm.className = 'grid';
 
@@ -151,7 +148,7 @@ export function renderSettingsView(root) {
   currentPasswordField.className = 'field';
   const currentPasswordLabel = document.createElement('label');
   currentPasswordLabel.htmlFor = 'currentPassword';
-  currentPasswordLabel.textContent = 'Current Password';
+  currentPasswordLabel.textContent = 'Current password';
   const currentPasswordInput = document.createElement('input');
   currentPasswordInput.id = 'currentPassword';
   currentPasswordInput.type = 'password';
@@ -162,7 +159,7 @@ export function renderSettingsView(root) {
   newPasswordField.className = 'field';
   const newPasswordLabel = document.createElement('label');
   newPasswordLabel.htmlFor = 'newPassword';
-  newPasswordLabel.textContent = 'New Password';
+  newPasswordLabel.textContent = 'New password';
   const newPasswordInput = document.createElement('input');
   newPasswordInput.id = 'newPassword';
   newPasswordInput.type = 'password';
@@ -174,7 +171,7 @@ export function renderSettingsView(root) {
   confirmPasswordField.className = 'field';
   const confirmPasswordLabel = document.createElement('label');
   confirmPasswordLabel.htmlFor = 'confirmPassword';
-  confirmPasswordLabel.textContent = 'Confirm New Password';
+  confirmPasswordLabel.textContent = 'Confirm new password';
   const confirmPasswordInput = document.createElement('input');
   confirmPasswordInput.id = 'confirmPassword';
   confirmPasswordInput.type = 'password';
@@ -185,7 +182,7 @@ export function renderSettingsView(root) {
   const changePasswordBtn = document.createElement('button');
   changePasswordBtn.className = 'primary';
   changePasswordBtn.type = 'submit';
-  changePasswordBtn.textContent = 'Change Password';
+  changePasswordBtn.textContent = 'Change password';
 
   accountForm.append(currentPasswordField, newPasswordField, confirmPasswordField, changePasswordBtn);
   accountCard.append(accountTitle, accountForm);
@@ -221,7 +218,7 @@ export function renderSettingsView(root) {
   nameField.className = 'field';
   const nameLabel = document.createElement('label');
   nameLabel.htmlFor = 'projectName';
-  nameLabel.textContent = 'Project Name';
+  nameLabel.textContent = 'Project name';
   const nameInput = document.createElement('input');
   nameInput.id = 'projectName';
   nameInput.maxLength = 80;
@@ -232,7 +229,7 @@ export function renderSettingsView(root) {
   rateField.className = 'field';
   const rateLabel = document.createElement('label');
   rateLabel.htmlFor = 'projectRate';
-  rateLabel.textContent = 'Hourly Rate (optional)';
+  rateLabel.textContent = 'Hourly rate (optional)';
   const rateInput = document.createElement('input');
   rateInput.id = 'projectRate';
   rateInput.type = 'number';
@@ -243,7 +240,7 @@ export function renderSettingsView(root) {
   const addBtn = document.createElement('button');
   addBtn.className = 'primary';
   addBtn.type = 'submit';
-  addBtn.textContent = 'Add Project';
+  addBtn.textContent = 'Add project';
 
   pForm.append(nameField, rateField, addBtn);
 
@@ -306,7 +303,7 @@ export function renderSettingsView(root) {
     usersCard = document.createElement('section');
     usersCard.className = 'card';
     const uTitle = document.createElement('h2');
-    uTitle.textContent = 'User Management';
+    uTitle.textContent = 'Users';
 
     const uForm = document.createElement('form');
     uForm.className = 'grid';
@@ -353,12 +350,12 @@ export function renderSettingsView(root) {
     const createBtn = document.createElement('button');
     createBtn.className = 'primary';
     createBtn.type = 'submit';
-    createBtn.textContent = 'Create User';
+    createBtn.textContent = 'Create user';
 
     const resetForm = document.createElement('form');
     resetForm.className = 'grid';
     const resetTitle = document.createElement('h3');
-    resetTitle.textContent = 'Reset Password';
+    resetTitle.textContent = 'Reset password';
     const resetUserField = document.createElement('div');
     resetUserField.className = 'field';
     const resetUserLabel = document.createElement('label');
@@ -372,7 +369,7 @@ export function renderSettingsView(root) {
     resetPassField.className = 'field';
     const resetPassLabel = document.createElement('label');
     resetPassLabel.htmlFor = 'resetUserPassword';
-    resetPassLabel.textContent = 'New Password';
+    resetPassLabel.textContent = 'New password';
     const resetPassInput = document.createElement('input');
     resetPassInput.id = 'resetUserPassword';
     resetPassInput.type = 'password';
@@ -383,12 +380,12 @@ export function renderSettingsView(root) {
     const resetBtn = document.createElement('button');
     resetBtn.className = 'danger';
     resetBtn.type = 'submit';
-    resetBtn.textContent = 'Reset Password';
+    resetBtn.textContent = 'Reset password';
 
     const deleteForm = document.createElement('form');
     deleteForm.className = 'grid';
     const deleteTitle = document.createElement('h3');
-    deleteTitle.textContent = 'Disable User';
+    deleteTitle.textContent = 'Disable user';
     const deleteUserField = document.createElement('div');
     deleteUserField.className = 'field';
     const deleteUserLabel = document.createElement('label');
@@ -400,7 +397,7 @@ export function renderSettingsView(root) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'danger';
     deleteBtn.type = 'submit';
-    deleteBtn.textContent = 'Disable User';
+    deleteBtn.textContent = 'Disable user';
 
     const userList = document.createElement('div');
     userList.className = 'list';
@@ -514,13 +511,13 @@ export function renderSettingsView(root) {
   importGroup.className = 'btn-group';
   const importGroupLabel = document.createElement('p');
   importGroupLabel.className = 'btn-group-label';
-  importGroupLabel.textContent = 'Import & Export';
+  importGroupLabel.textContent = 'Import & export';
   const importBtn = document.createElement('button');
-  importBtn.textContent = 'Import JSON Backup';
+  importBtn.textContent = 'Import JSON backup';
   const importTabularBtn = document.createElement('button');
   importTabularBtn.textContent = 'Import CSV / Excel';
   const templateBtn = document.createElement('button');
-  templateBtn.textContent = 'Download CSV Template';
+  templateBtn.textContent = 'Download CSV template';
   importGroup.append(importGroupLabel, importBtn, importTabularBtn, templateBtn);
 
   // Maintenance group
@@ -532,7 +529,7 @@ export function renderSettingsView(root) {
   maintenanceLabel.className = 'btn-group-label';
   maintenanceLabel.textContent = 'Maintenance';
   const pruneBtn = document.createElement('button');
-  pruneBtn.textContent = 'Prune Old Entries';
+  pruneBtn.textContent = 'Prune old entries';
   maintenanceGroup.append(maintenanceLabel, pruneBtn);
 
   // Encryption group
@@ -542,13 +539,13 @@ export function renderSettingsView(root) {
   encryptionGroup.className = 'btn-group';
   const encryptionLabel = document.createElement('p');
   encryptionLabel.className = 'btn-group-label';
-  encryptionLabel.textContent = 'Local Encryption';
+  encryptionLabel.textContent = 'Local encryption';
   const vaultBtn = document.createElement('button');
   vaultBtn.textContent = 'Loading vault state...';
   vaultBtn.disabled = true;
   const recoverBtn = document.createElement('button');
   recoverBtn.className = 'danger';
-  recoverBtn.textContent = 'Reset Corrupted Vault';
+  recoverBtn.textContent = 'Reset corrupted vault';
   encryptionGroup.append(encryptionLabel, vaultBtn, recoverBtn);
 
   const fileInput = document.getElementById('importFileInput');
@@ -757,7 +754,7 @@ export function renderSettingsView(root) {
   const privacyCard = document.createElement('section');
   privacyCard.className = 'card';
   const privacyTitle = document.createElement('h2');
-  privacyTitle.textContent = 'Security & Limits';
+  privacyTitle.textContent = 'Local data limits';
   const privacyText = document.createElement('p');
   privacyText.className = 'muted';
   privacyText.textContent = 'Data is stored locally in this browser profile. A compromised device or browser extension can access local data.';
@@ -774,11 +771,11 @@ export function renderSettingsView(root) {
   const supportCard = document.createElement('section');
   supportCard.className = 'card';
   const supportTitle = document.createElement('h2');
-  supportTitle.textContent = 'Browser Support';
+  supportTitle.textContent = 'Browser support';
   const supportBody = document.createElement('div');
   supportBody.className = 'list';
   const supportRefresh = document.createElement('button');
-  supportRefresh.textContent = 'Refresh Support Check';
+  supportRefresh.textContent = 'Refresh check';
 
   async function renderSupport() {
     const report = await getBrowserSupportReport();
@@ -856,10 +853,86 @@ export function renderSettingsView(root) {
 
   themeCard.append(themeTitle, themeGrid);
 
+  // --- Page heading ---
+  const pageHeader = document.createElement('div');
+  const pageTitle = document.createElement('h1');
+  pageTitle.className = 'page-title';
+  pageTitle.textContent = 'Settings';
+  const pageSubtitle = document.createElement('p');
+  pageSubtitle.className = 'page-subtitle';
+  pageSubtitle.textContent = 'Manage preferences, projects, and local data.';
+  pageHeader.append(pageTitle, pageSubtitle);
+
+  // --- Inner settings tabs ---
+  const tabDefs = [
+    { id: 'general', label: 'General' },
+    { id: 'appearance', label: 'Appearance' },
+    { id: 'projects', label: 'Projects' },
+    ...(usersCard ? [{ id: 'users', label: 'Users' }] : []),
+    { id: 'data', label: 'Data' },
+    { id: 'security', label: 'Security' },
+  ];
+
+  const settingsTabs = document.createElement('div');
+  settingsTabs.className = 'settings-tabs';
+  settingsTabs.setAttribute('role', 'tablist');
+
+  const panelMap = {
+    general: document.createElement('div'),
+    appearance: document.createElement('div'),
+    projects: document.createElement('div'),
+    data: document.createElement('div'),
+    security: document.createElement('div'),
+  };
+  if (usersCard) panelMap.users = document.createElement('div');
+
+  panelMap.general.className = 'settings-panel is-active';
+  panelMap.general.append(appSettingsCard);
+
+  panelMap.appearance.className = 'settings-panel';
+  panelMap.appearance.append(themeCard);
+
+  panelMap.projects.className = 'settings-panel';
+  panelMap.projects.append(projectCard);
+
   if (usersCard) {
-    wrap.append(themeCard, appSettingsCard, projectCard, usersCard, dataCard, privacyCard, supportCard);
-  } else {
-    wrap.append(themeCard, appSettingsCard, projectCard, dataCard, privacyCard, supportCard);
+    panelMap.users.className = 'settings-panel';
+    panelMap.users.append(usersCard);
   }
-  root.append(wrap);
+
+  panelMap.data.className = 'settings-panel';
+  panelMap.data.append(dataCard);
+
+  panelMap.security.className = 'settings-panel';
+  panelMap.security.append(accountCard, privacyCard, supportCard);
+
+  let activeTab = 'general';
+
+  tabDefs.forEach(({ id, label }) => {
+    const btn = document.createElement('button');
+    btn.className = 'settings-tab' + (id === activeTab ? ' is-active' : '');
+    btn.type = 'button';
+    btn.textContent = label;
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', id === activeTab ? 'true' : 'false');
+    btn.addEventListener('click', () => {
+      if (activeTab === id) return;
+      panelMap[activeTab].classList.remove('is-active');
+      const prevBtn = settingsTabs.querySelector('.settings-tab.is-active');
+      if (prevBtn) {
+        prevBtn.classList.remove('is-active');
+        prevBtn.setAttribute('aria-selected', 'false');
+      }
+      activeTab = id;
+      panelMap[id].classList.add('is-active');
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+    });
+    settingsTabs.append(btn);
+  });
+
+  const panelContainer = document.createElement('div');
+  Object.values(panelMap).forEach((p) => panelContainer.append(p));
+
+  root.append(pageHeader, settingsTabs, panelContainer);
 }

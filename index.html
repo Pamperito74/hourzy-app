@@ -6,32 +6,60 @@
     <meta name="theme-color" content="#0c7a6a" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'" />
     <meta name="description" content="Hourzy: private, local-first work-hours tracking." />
-    <title>Hourzy v1</title>
+    <title>Hourzy</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' rx='6' fill='%230c7a6a'/%3E%3Ctext x='50%25' y='56%25' font-size='20' font-weight='700' text-anchor='middle' dominant-baseline='middle' fill='white' font-family='Arial,sans-serif'%3EH%3C/text%3E%3C/svg%3E" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+
     <div id="app" class="app-shell">
-      <header class="topbar">
-        <div class="brand-wrap">
-          <h1 class="brand">Hourzy</h1>
-          <p class="tagline">Track hours, not overhead.</p>
+
+      <!-- Left sidebar — hidden until authenticated -->
+      <aside class="sidebar" hidden>
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
+            <svg class="sidebar-logo-mark" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+              <rect width="28" height="28" rx="7" fill="var(--accent)"/>
+              <text x="50%" y="56%" font-size="15" font-weight="700" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial,sans-serif">H</text>
+            </svg>
+            <div class="brand-wrap">
+              <span class="brand">Hourzy</span>
+              <span class="tagline">local</span>
+            </div>
+          </div>
+
+          <nav class="tabs" aria-label="Primary navigation">
+            <button class="tab is-active" data-view="tracker">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Tracker</span>
+            </button>
+            <button class="tab" data-view="entries">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <span>Entries</span>
+            </button>
+            <button class="tab" data-view="export">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Export</span>
+            </button>
+            <button class="tab" data-view="settings">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span>Settings</span>
+            </button>
+          </nav>
         </div>
-        <div class="row">
+
+        <div class="sidebar-footer">
           <div id="lockBanner" class="banner" aria-live="polite" hidden></div>
-          <button id="logoutBtn" hidden>Logout</button>
+          <button id="logoutBtn" class="nav-logout" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
         </div>
-      </header>
+      </aside>
 
-      <nav class="tabs" aria-label="Primary" hidden>
-        <button class="tab is-active" data-view="tracker">Tracker</button>
-        <button class="tab" data-view="entries">Entries</button>
-        <button class="tab" data-view="export">Export</button>
-        <button class="tab" data-view="settings">Settings</button>
-      </nav>
-
+      <!-- Main content area -->
       <main id="main" class="content" tabindex="-1"></main>
     </div>
 
