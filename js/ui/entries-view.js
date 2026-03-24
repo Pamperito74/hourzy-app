@@ -33,11 +33,9 @@ export function renderEntriesView(root) {
   pageHeader.append(pageTitle, pageSubtitle);
   root.append(pageHeader);
 
-  const card = document.createElement('section');
-  card.className = 'card';
-
-  const filters = document.createElement('div');
-  filters.className = 'grid two';
+  // Filter bar — inline toolbar, outside the card
+  const filterBar = document.createElement('div');
+  filterBar.className = 'filter-bar';
 
   const fromField = document.createElement('div');
   fromField.className = 'field';
@@ -82,9 +80,13 @@ export function renderEntriesView(root) {
   pField.append(pLabel, pSelect);
 
   const clearBtn = document.createElement('button');
-  clearBtn.textContent = 'Clear Filters';
+  clearBtn.textContent = 'Clear filters';
 
-  filters.append(fromField, toField, pField, clearBtn);
+  filterBar.append(fromField, toField, pField, clearBtn);
+  root.append(filterBar);
+
+  const card = document.createElement('section');
+  card.className = 'card';
 
   const rows = filterEntries(state.entries, {
     from: state.ui.filters.from,
@@ -178,7 +180,7 @@ export function renderEntriesView(root) {
 
   table.append(thead, tbody);
   tableWrap.append(table);
-  card.append(filters, summary, tableWrap);
+  card.append(summary, tableWrap);
   root.append(card);
 
   function syncFilters() {

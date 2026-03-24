@@ -18,11 +18,9 @@ export function renderExportView(root) {
   pageHeader.append(pageTitle, pageSubtitle);
   root.append(pageHeader);
 
-  const card = document.createElement('section');
-  card.className = 'card';
-
-  const filters = document.createElement('div');
-  filters.className = 'grid two';
+  // Filter bar — inline toolbar, outside the card
+  const filterBar = document.createElement('div');
+  filterBar.className = 'filter-bar';
 
   const fromField = document.createElement('div');
   fromField.className = 'field';
@@ -66,7 +64,11 @@ export function renderExportView(root) {
   projectSelect.value = state.ui.filters.projectId || 'all';
   projectField.append(projectLabel, projectSelect);
 
-  filters.append(fromField, toField, projectField);
+  filterBar.append(fromField, toField, projectField);
+  root.append(filterBar);
+
+  const card = document.createElement('section');
+  card.className = 'card';
 
   const filtered = filterEntries(state.entries, {
     from: fromInput.value,
@@ -171,6 +173,6 @@ export function renderExportView(root) {
     }, 120000);
   });
 
-  card.append(filters, stats, actions);
+  card.append(stats, actions);
   root.append(card);
 }

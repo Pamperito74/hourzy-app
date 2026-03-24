@@ -21,12 +21,9 @@ export function renderReportsView(root) {
   pageHeader.append(pageTitle, pageSubtitle);
   root.append(pageHeader);
 
-  // Filter bar
-  const filterCard = document.createElement('section');
-  filterCard.className = 'card';
-
-  const filters = document.createElement('div');
-  filters.className = 'grid two';
+  // Filter bar — inline toolbar, no card wrapper
+  const filterBar = document.createElement('div');
+  filterBar.className = 'filter-bar';
 
   const fromField = document.createElement('div');
   fromField.className = 'field';
@@ -73,9 +70,8 @@ export function renderReportsView(root) {
   const clearBtn = document.createElement('button');
   clearBtn.textContent = 'Clear filters';
 
-  filters.append(fromField, toField, pField, clearBtn);
-  filterCard.append(filters);
-  root.append(filterCard);
+  filterBar.append(fromField, toField, pField, clearBtn);
+  root.append(filterBar);
 
   // Bind filter events
   function syncFilters() {
@@ -112,30 +108,30 @@ export function renderReportsView(root) {
   const selectedMs = filtered.reduce((acc, cur) => acc + cur.durationMs, 0);
 
   const statsRow = document.createElement('div');
-  statsRow.className = 'grid three';
+  statsRow.className = 'stat-row';
 
-  function makeStatCard(label, ms, sub) {
-    const card = document.createElement('section');
-    card.className = 'card';
+  function makeStatItem(label, ms, sub) {
+    const item = document.createElement('div');
+    item.className = 'stat-row-item';
     const h = document.createElement('h3');
     h.textContent = label;
     const s = document.createElement('p');
     s.className = 'stat';
     s.textContent = `${formatHours(ms)} h`;
-    card.append(h, s);
+    item.append(h, s);
     if (sub) {
       const p = document.createElement('p');
       p.className = 'muted';
       p.textContent = sub;
-      card.append(p);
+      item.append(p);
     }
-    return card;
+    return item;
   }
 
   statsRow.append(
-    makeStatCard('This week', thisWeekMs),
-    makeStatCard('This month', thisMonthMs),
-    makeStatCard('Selected period', selectedMs, `${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`)
+    makeStatItem('This week', thisWeekMs),
+    makeStatItem('This month', thisMonthMs),
+    makeStatItem('Selected period', selectedMs, `${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`)
   );
   root.append(statsRow);
 
