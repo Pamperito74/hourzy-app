@@ -30,12 +30,26 @@ export function renderLoginView(root, { onLoginSuccess }) {
   const passLabel = document.createElement('label');
   passLabel.htmlFor = 'loginPassword';
   passLabel.textContent = 'Password';
+  const passWrap = document.createElement('div');
+  passWrap.className = 'input-reveal';
   const passInput = document.createElement('input');
   passInput.id = 'loginPassword';
   passInput.type = 'password';
   passInput.required = true;
   passInput.autocomplete = 'current-password';
-  passField.append(passLabel, passInput);
+  const revealBtn = document.createElement('button');
+  revealBtn.type = 'button';
+  revealBtn.className = 'reveal-btn';
+  revealBtn.setAttribute('aria-label', 'Show password');
+  revealBtn.textContent = '👁';
+  revealBtn.addEventListener('click', () => {
+    const showing = passInput.type === 'text';
+    passInput.type = showing ? 'password' : 'text';
+    revealBtn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+    revealBtn.textContent = showing ? '👁' : '🙈';
+  });
+  passWrap.append(passInput, revealBtn);
+  passField.append(passLabel, passWrap);
 
   const loginBtn = document.createElement('button');
   loginBtn.className = 'primary';

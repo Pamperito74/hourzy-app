@@ -137,6 +137,32 @@ body {
   gap: 6px;
 }
 
+.input-reveal {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-reveal input {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.reveal-btn {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 6px;
+  color: var(--muted);
+}
+
 .field.inline {
   grid-template-columns: 130px 1fr;
   align-items: center;
