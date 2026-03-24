@@ -347,7 +347,6 @@ h2 {
   flex: 1;
   min-width: 0;
   padding: 36px 40px 60px;
-  max-width: 1000px;
 }
 
 /* When sidebar is hidden (login/loading screen), content fills viewport and centers */
