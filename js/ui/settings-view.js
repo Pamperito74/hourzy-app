@@ -511,54 +511,45 @@ export function renderSettingsView(root) {
 
   // Import group
   const importGroup = document.createElement('div');
-  importGroup.className = 'action-group';
+  importGroup.className = 'btn-group';
   const importGroupLabel = document.createElement('p');
-  importGroupLabel.className = 'list-header';
-  importGroupLabel.textContent = 'Import';
-  const importGroupBtns = document.createElement('div');
-  importGroupBtns.className = 'btn-group';
+  importGroupLabel.className = 'btn-group-label';
+  importGroupLabel.textContent = 'Import & Export';
   const importBtn = document.createElement('button');
   importBtn.textContent = 'Import JSON Backup';
   const importTabularBtn = document.createElement('button');
   importTabularBtn.textContent = 'Import CSV / Excel';
   const templateBtn = document.createElement('button');
   templateBtn.textContent = 'Download CSV Template';
-  importGroupBtns.append(importBtn, importTabularBtn, templateBtn);
-  importGroup.append(importGroupLabel, importGroupBtns);
+  importGroup.append(importGroupLabel, importBtn, importTabularBtn, templateBtn);
 
   // Maintenance group
   const sep1 = document.createElement('hr');
   sep1.className = 'section-sep';
   const maintenanceGroup = document.createElement('div');
-  maintenanceGroup.className = 'action-group';
+  maintenanceGroup.className = 'btn-group';
   const maintenanceLabel = document.createElement('p');
-  maintenanceLabel.className = 'list-header';
+  maintenanceLabel.className = 'btn-group-label';
   maintenanceLabel.textContent = 'Maintenance';
-  const maintenanceBtns = document.createElement('div');
-  maintenanceBtns.className = 'btn-group';
   const pruneBtn = document.createElement('button');
   pruneBtn.textContent = 'Prune Old Entries';
-  maintenanceBtns.append(pruneBtn);
-  maintenanceGroup.append(maintenanceLabel, maintenanceBtns);
+  maintenanceGroup.append(maintenanceLabel, pruneBtn);
 
   // Encryption group
   const sep2 = document.createElement('hr');
   sep2.className = 'section-sep';
   const encryptionGroup = document.createElement('div');
-  encryptionGroup.className = 'action-group';
+  encryptionGroup.className = 'btn-group';
   const encryptionLabel = document.createElement('p');
-  encryptionLabel.className = 'list-header';
+  encryptionLabel.className = 'btn-group-label';
   encryptionLabel.textContent = 'Local Encryption';
-  const encryptionBtns = document.createElement('div');
-  encryptionBtns.className = 'btn-group row';
   const vaultBtn = document.createElement('button');
   vaultBtn.textContent = 'Loading vault state...';
   vaultBtn.disabled = true;
   const recoverBtn = document.createElement('button');
   recoverBtn.className = 'danger';
   recoverBtn.textContent = 'Reset Corrupted Vault';
-  encryptionBtns.append(vaultBtn, recoverBtn);
-  encryptionGroup.append(encryptionLabel, encryptionBtns);
+  encryptionGroup.append(encryptionLabel, vaultBtn, recoverBtn);
 
   const fileInput = document.getElementById('importFileInput');
   const tabularInput = document.getElementById('tabularFileInput');

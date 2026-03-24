@@ -733,15 +733,6 @@ button.sm {
   align-items: center;
 }
 
-.action-group {
-  display: grid;
-  gap: 8px;
-}
-
-.action-group + .action-group {
-  margin-top: 0;
-}
-
 /* ============================================================
    LIST HEADER (label above a list inside a card)
    ============================================================ */
@@ -753,6 +744,16 @@ button.sm {
   letter-spacing: 0.05em;
   color: var(--muted);
   margin-bottom: 8px;
+}
+
+/* Label inside a btn-group, above the buttons */
+.btn-group-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
 }
 
 /* ============================================================
