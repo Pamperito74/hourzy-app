@@ -148,6 +148,26 @@ body {
   padding-right: 72px;
 }
 
+.reset-hint {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.link-btn:hover {
+  color: var(--danger);
+}
+
 .reveal-btn {
   position: absolute;
   right: 36px;

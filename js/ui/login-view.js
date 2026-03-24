@@ -1,4 +1,5 @@
 import { loginWithPassword } from '../auth.js';
+import { nukeAllLocalData } from '../db.js';
 import { notify } from '../notify.js';
 
 export function renderLoginView(root, { onLoginSuccess }) {
@@ -56,8 +57,22 @@ export function renderLoginView(root, { onLoginSuccess }) {
   loginBtn.type = 'submit';
   loginBtn.textContent = 'Login';
 
+  const resetWrap = document.createElement('p');
+  resetWrap.className = 'muted reset-hint';
+  const resetLink = document.createElement('button');
+  resetLink.type = 'button';
+  resetLink.className = 'link-btn';
+  resetLink.textContent = 'Reset all local data';
+  resetLink.addEventListener('click', async () => {
+    const confirmed = window.confirm('This will permanently delete all local Hourzy data and reload. Continue?');
+    if (!confirmed) return;
+    await nukeAllLocalData();
+    location.reload();
+  });
+  resetWrap.append(resetLink);
+
   form.append(userField, passField, loginBtn);
-  card.append(title, hint, form);
+  card.append(title, hint, form, resetWrap);
   root.append(card);
 
   form.addEventListener('submit', async (event) => {

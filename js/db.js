@@ -77,6 +77,18 @@ function initVaultCoherenceListeners() {
   });
 }
 
+export async function nukeAllLocalData() {
+  localStorage.clear();
+  if (typeof indexedDB !== 'undefined') {
+    await new Promise((resolve) => {
+      const req = indexedDB.deleteDatabase(DB_NAME);
+      req.onsuccess = resolve;
+      req.onerror = resolve;
+      req.onblocked = resolve;
+    });
+  }
+}
+
 export function initDb() {
   if (dbPromise) return dbPromise;
   initVaultCoherenceListeners();
