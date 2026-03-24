@@ -846,7 +846,7 @@ th {
 
 .theme-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
 }
 
@@ -1448,3 +1448,29 @@ dialog.modal::backdrop {
     display: block !important;
   }
 }
+
+/* ============================================================
+   PROJECT ADD ROW (inline add form)
+   ============================================================ */
+
+.project-add-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.project-add-row .field:first-child { flex: 4; }
+.project-add-row .field:nth-child(2) { flex: 1; min-width: 120px; }
+.project-add-row button[type="submit"] { flex-shrink: 0; align-self: flex-end; margin-bottom: 0; white-space: nowrap; }
+
+/* ============================================================
+   SETTINGS ROWS (inline field clusters in General tab)
+   ============================================================ */
+
+.settings-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.settings-row .field { flex: 1; min-width: 140px; }
+.settings-row .field.wide { flex: 2; }

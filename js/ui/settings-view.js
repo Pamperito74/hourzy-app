@@ -24,13 +24,41 @@ export function renderSettingsView(root) {
   const state = getState();
   const session = getAuthSession();
 
+  // ------------------------------------------------------------------
+  // Helper: password field with reveal toggle
+  // ------------------------------------------------------------------
+  function makeRevealField(id, labelText) {
+    const wrap = document.createElement('div');
+    wrap.className = 'field';
+    const lbl = document.createElement('label');
+    lbl.htmlFor = id;
+    lbl.textContent = labelText;
+    const inputWrap = document.createElement('div');
+    inputWrap.className = 'input-reveal';
+    const input = document.createElement('input');
+    input.id = id;
+    input.type = 'password';
+    const revealBtn = document.createElement('button');
+    revealBtn.type = 'button';
+    revealBtn.className = 'reveal-btn';
+    revealBtn.textContent = 'Show';
+    revealBtn.setAttribute('aria-label', 'Toggle password visibility');
+    revealBtn.addEventListener('click', () => {
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      revealBtn.textContent = isHidden ? 'Hide' : 'Show';
+    });
+    inputWrap.append(input, revealBtn);
+    wrap.append(lbl, inputWrap);
+    return { wrap, input };
+  }
+
   const appSettingsCard = document.createElement('section');
   appSettingsCard.className = 'card';
   const title = document.createElement('h2');
   title.textContent = 'General';
 
   const form = document.createElement('form');
-  form.className = 'grid';
 
   const tzField = document.createElement('div');
   tzField.className = 'field';
@@ -76,7 +104,7 @@ export function renderSettingsView(root) {
   roundingField.append(roundingLabel, roundingSelect);
 
   const idleField = document.createElement('div');
-  idleField.className = 'row';
+  idleField.className = 'field inline';
   const idleLabel = document.createElement('label');
   idleLabel.htmlFor = 'setIdleDetection';
   idleLabel.textContent = 'Idle detection (10 min prompt)';
@@ -87,7 +115,7 @@ export function renderSettingsView(root) {
   idleField.append(idleCheckbox, idleLabel);
 
   const reminderField = document.createElement('div');
-  reminderField.className = 'row';
+  reminderField.className = 'field inline';
   const reminderLabel = document.createElement('label');
   reminderLabel.htmlFor = 'setReminder';
   reminderLabel.textContent = 'Daily reminder at/after 6PM';
@@ -116,7 +144,21 @@ export function renderSettingsView(root) {
   saveBtn.type = 'submit';
   saveBtn.textContent = 'Save settings';
 
-  form.append(tzField, wsField, roundingField, idleField, reminderField, autoLockField, saveBtn);
+  // Row 1: Timezone (wide) | Week starts on | Rounding
+  const topRow = document.createElement('div');
+  topRow.className = 'settings-row';
+  tzField.classList.add('wide');
+  topRow.append(tzField, wsField, roundingField);
+
+  // Row 2: Idle | Reminder | Vault auto-lock | Save button
+  const bottomRow = document.createElement('div');
+  bottomRow.className = 'settings-row';
+  bottomRow.style.alignItems = 'center';
+  autoLockField.style.minWidth = '160px';
+  saveBtn.style.flexShrink = '0';
+  bottomRow.append(idleField, reminderField, autoLockField, saveBtn);
+
+  form.append(topRow, bottomRow);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -142,49 +184,28 @@ export function renderSettingsView(root) {
   const accountTitle = document.createElement('h2');
   accountTitle.textContent = 'Change password';
   const accountForm = document.createElement('form');
-  accountForm.className = 'grid';
 
-  const currentPasswordField = document.createElement('div');
-  currentPasswordField.className = 'field';
-  const currentPasswordLabel = document.createElement('label');
-  currentPasswordLabel.htmlFor = 'currentPassword';
-  currentPasswordLabel.textContent = 'Current password';
-  const currentPasswordInput = document.createElement('input');
-  currentPasswordInput.id = 'currentPassword';
-  currentPasswordInput.type = 'password';
+  const { wrap: currentPasswordField, input: currentPasswordInput } = makeRevealField('currentPassword', 'Current password');
   currentPasswordInput.required = true;
-  currentPasswordField.append(currentPasswordLabel, currentPasswordInput);
 
-  const newPasswordField = document.createElement('div');
-  newPasswordField.className = 'field';
-  const newPasswordLabel = document.createElement('label');
-  newPasswordLabel.htmlFor = 'newPassword';
-  newPasswordLabel.textContent = 'New password';
-  const newPasswordInput = document.createElement('input');
-  newPasswordInput.id = 'newPassword';
-  newPasswordInput.type = 'password';
+  const { wrap: newPasswordField, input: newPasswordInput } = makeRevealField('newPassword', 'New password');
   newPasswordInput.minLength = 8;
   newPasswordInput.required = true;
-  newPasswordField.append(newPasswordLabel, newPasswordInput);
 
-  const confirmPasswordField = document.createElement('div');
-  confirmPasswordField.className = 'field';
-  const confirmPasswordLabel = document.createElement('label');
-  confirmPasswordLabel.htmlFor = 'confirmPassword';
-  confirmPasswordLabel.textContent = 'Confirm new password';
-  const confirmPasswordInput = document.createElement('input');
-  confirmPasswordInput.id = 'confirmPassword';
-  confirmPasswordInput.type = 'password';
+  const { wrap: confirmPasswordField, input: confirmPasswordInput } = makeRevealField('confirmPassword', 'Confirm new password');
   confirmPasswordInput.minLength = 8;
   confirmPasswordInput.required = true;
-  confirmPasswordField.append(confirmPasswordLabel, confirmPasswordInput);
 
   const changePasswordBtn = document.createElement('button');
   changePasswordBtn.className = 'primary';
   changePasswordBtn.type = 'submit';
   changePasswordBtn.textContent = 'Change password';
 
-  accountForm.append(currentPasswordField, newPasswordField, confirmPasswordField, changePasswordBtn);
+  const pwRow = document.createElement('div');
+  pwRow.className = 'grid three';
+  pwRow.append(currentPasswordField, newPasswordField, confirmPasswordField);
+
+  accountForm.append(pwRow, changePasswordBtn);
   accountCard.append(accountTitle, accountForm);
 
   accountForm.addEventListener('submit', async (event) => {
@@ -212,7 +233,6 @@ export function renderSettingsView(root) {
   pTitle.textContent = 'Projects';
 
   const pForm = document.createElement('form');
-  pForm.className = 'grid';
 
   const nameField = document.createElement('div');
   nameField.className = 'field';
@@ -242,7 +262,10 @@ export function renderSettingsView(root) {
   addBtn.type = 'submit';
   addBtn.textContent = 'Add project';
 
-  pForm.append(nameField, rateField, addBtn);
+  const addRow = document.createElement('div');
+  addRow.className = 'project-add-row';
+  addRow.append(nameField, rateField, addBtn);
+  pForm.append(addRow);
 
   const projectListSep = document.createElement('hr');
   projectListSep.className = 'section-sep';
@@ -306,7 +329,6 @@ export function renderSettingsView(root) {
     uTitle.textContent = 'Users';
 
     const uForm = document.createElement('form');
-    uForm.className = 'grid';
 
     const uNameField = document.createElement('div');
     uNameField.className = 'field';
@@ -335,17 +357,11 @@ export function renderSettingsView(root) {
     uRoleSelect.append(adminOpt, userOpt);
     uRoleField.append(uRoleLabel, uRoleSelect);
 
-    const uPassField = document.createElement('div');
-    uPassField.className = 'field';
-    const uPassLabel = document.createElement('label');
-    uPassLabel.htmlFor = 'newUserPassword';
-    uPassLabel.textContent = 'Password';
-    const uPassInput = document.createElement('input');
-    uPassInput.id = 'newUserPassword';
-    uPassInput.type = 'password';
+    const { wrap: uPassField, input: uPassInput } = makeRevealField('newUserPassword', 'Password');
     uPassInput.required = true;
     uPassInput.minLength = 8;
-    uPassField.append(uPassLabel, uPassInput);
+
+    const { wrap: uConfirmPassField, input: uConfirmPassInput } = makeRevealField('newUserPasswordConfirm', 'Confirm password');
 
     const createBtn = document.createElement('button');
     createBtn.className = 'primary';
@@ -353,7 +369,6 @@ export function renderSettingsView(root) {
     createBtn.textContent = 'Create user';
 
     const resetForm = document.createElement('form');
-    resetForm.className = 'grid';
     const resetTitle = document.createElement('h3');
     resetTitle.textContent = 'Reset password';
     const resetUserField = document.createElement('div');
@@ -365,17 +380,9 @@ export function renderSettingsView(root) {
     resetUserSelect.id = 'resetUserId';
     resetUserField.append(resetUserLabel, resetUserSelect);
 
-    const resetPassField = document.createElement('div');
-    resetPassField.className = 'field';
-    const resetPassLabel = document.createElement('label');
-    resetPassLabel.htmlFor = 'resetUserPassword';
-    resetPassLabel.textContent = 'New password';
-    const resetPassInput = document.createElement('input');
-    resetPassInput.id = 'resetUserPassword';
-    resetPassInput.type = 'password';
+    const { wrap: resetPassField, input: resetPassInput } = makeRevealField('resetUserPassword', 'New password');
     resetPassInput.minLength = 8;
     resetPassInput.required = true;
-    resetPassField.append(resetPassLabel, resetPassInput);
 
     const resetBtn = document.createElement('button');
     resetBtn.className = 'danger';
@@ -442,6 +449,10 @@ export function renderSettingsView(root) {
     uForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       try {
+        if (uPassInput.value && uConfirmPassInput.value !== uPassInput.value) {
+          notify('Passwords do not match.', 'error');
+          return;
+        }
         await createUser(session, {
           username: uNameInput.value,
           password: uPassInput.value,
@@ -449,6 +460,7 @@ export function renderSettingsView(root) {
         });
         uNameInput.value = '';
         uPassInput.value = '';
+        uConfirmPassInput.value = '';
         notify('User created.', 'success');
         await renderUsers();
       } catch (error) {
@@ -492,8 +504,18 @@ export function renderSettingsView(root) {
     userListLabel.className = 'list-header';
     userListLabel.textContent = 'All Users';
 
-    uForm.append(uNameField, uRoleField, uPassField, createBtn);
-    resetForm.append(resetTitle, resetUserField, resetPassField, resetBtn);
+    const uRow1 = document.createElement('div');
+    uRow1.className = 'grid two';
+    uRow1.append(uNameField, uRoleField);
+    const uRow2 = document.createElement('div');
+    uRow2.className = 'grid two';
+    uRow2.append(uPassField, uConfirmPassField);
+    uForm.append(uRow1, uRow2, createBtn);
+
+    const resetRow = document.createElement('div');
+    resetRow.className = 'grid two';
+    resetRow.append(resetUserField, resetPassField);
+    resetForm.append(resetTitle, resetRow, resetBtn);
     deleteForm.append(deleteTitle, deleteUserField, deleteBtn);
     usersCard.append(uTitle, uForm, resetSep, resetForm, deleteSep, deleteForm, userListSep, userListLabel, userList);
   }
@@ -506,12 +528,11 @@ export function renderSettingsView(root) {
   dText.className = 'muted';
   dText.textContent = 'Importing backup will replace current local data.';
 
-  // Import group
+  // Import & export column
   const importGroup = document.createElement('div');
   importGroup.className = 'btn-group';
-  const importGroupLabel = document.createElement('p');
-  importGroupLabel.className = 'btn-group-label';
-  importGroupLabel.textContent = 'Import & export';
+  const importGroupLabel = document.createElement('h3');
+  importGroupLabel.textContent = 'Data';
   const importBtn = document.createElement('button');
   importBtn.textContent = 'Import JSON backup';
   const importTabularBtn = document.createElement('button');
@@ -520,25 +541,19 @@ export function renderSettingsView(root) {
   templateBtn.textContent = 'Download CSV template';
   importGroup.append(importGroupLabel, importBtn, importTabularBtn, templateBtn);
 
-  // Maintenance group
-  const sep1 = document.createElement('hr');
-  sep1.className = 'section-sep';
+  // Maintenance column
   const maintenanceGroup = document.createElement('div');
   maintenanceGroup.className = 'btn-group';
-  const maintenanceLabel = document.createElement('p');
-  maintenanceLabel.className = 'btn-group-label';
+  const maintenanceLabel = document.createElement('h3');
   maintenanceLabel.textContent = 'Maintenance';
   const pruneBtn = document.createElement('button');
   pruneBtn.textContent = 'Prune old entries';
   maintenanceGroup.append(maintenanceLabel, pruneBtn);
 
-  // Encryption group
-  const sep2 = document.createElement('hr');
-  sep2.className = 'section-sep';
+  // Encryption column
   const encryptionGroup = document.createElement('div');
   encryptionGroup.className = 'btn-group';
-  const encryptionLabel = document.createElement('p');
-  encryptionLabel.className = 'btn-group-label';
+  const encryptionLabel = document.createElement('h3');
   encryptionLabel.textContent = 'Local encryption';
   const vaultBtn = document.createElement('button');
   vaultBtn.textContent = 'Loading vault state...';
@@ -664,7 +679,11 @@ export function renderSettingsView(root) {
     await refreshVaultButton();
   });
 
-  dataCard.append(dTitle, dText, importGroup, sep1, maintenanceGroup, sep2, encryptionGroup);
+  const dataGrid = document.createElement('div');
+  dataGrid.className = 'grid three';
+  dataGrid.style.alignItems = 'start';
+  dataGrid.append(importGroup, maintenanceGroup, encryptionGroup);
+  dataCard.append(dTitle, dText, dataGrid);
 
   const refreshVaultButton = async () => {
     const status = await getVaultStatus();
