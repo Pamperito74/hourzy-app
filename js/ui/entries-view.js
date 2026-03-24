@@ -23,11 +23,18 @@ function projectOptions(projects) {
 export function renderEntriesView(root) {
   const state = getState();
 
+  const pageHeader = document.createElement('div');
+  const pageTitle = document.createElement('h1');
+  pageTitle.className = 'page-title';
+  pageTitle.textContent = 'Entries';
+  const pageSubtitle = document.createElement('p');
+  pageSubtitle.className = 'page-subtitle';
+  pageSubtitle.textContent = 'Filter and review all your logged time.';
+  pageHeader.append(pageTitle, pageSubtitle);
+  root.append(pageHeader);
+
   const card = document.createElement('section');
   card.className = 'card';
-
-  const title = document.createElement('h2');
-  title.textContent = 'Entries';
 
   const filters = document.createElement('div');
   filters.className = 'grid two';
@@ -171,7 +178,7 @@ export function renderEntriesView(root) {
 
   table.append(thead, tbody);
   tableWrap.append(table);
-  card.append(title, filters, summary, tableWrap);
+  card.append(filters, summary, tableWrap);
   root.append(card);
 
   function syncFilters() {

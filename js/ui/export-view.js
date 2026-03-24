@@ -8,11 +8,18 @@ import { passphraseDialog } from './dialogs.js';
 export function renderExportView(root) {
   const state = getState();
 
+  const pageHeader = document.createElement('div');
+  const pageTitle = document.createElement('h1');
+  pageTitle.className = 'page-title';
+  pageTitle.textContent = 'Export';
+  const pageSubtitle = document.createElement('p');
+  pageSubtitle.className = 'page-subtitle';
+  pageSubtitle.textContent = 'Download your data as CSV, JSON, or encrypted backup.';
+  pageHeader.append(pageTitle, pageSubtitle);
+  root.append(pageHeader);
+
   const card = document.createElement('section');
   card.className = 'card';
-
-  const title = document.createElement('h2');
-  title.textContent = 'Export';
 
   const filters = document.createElement('div');
   filters.className = 'grid two';
@@ -164,6 +171,6 @@ export function renderExportView(root) {
     }, 120000);
   });
 
-  card.append(title, filters, stats, actions);
+  card.append(filters, stats, actions);
   root.append(card);
 }
