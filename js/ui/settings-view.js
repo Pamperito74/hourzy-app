@@ -550,7 +550,7 @@ export function renderSettingsView(root) {
   encryptionLabel.className = 'list-header';
   encryptionLabel.textContent = 'Local Encryption';
   const encryptionBtns = document.createElement('div');
-  encryptionBtns.className = 'btn-group';
+  encryptionBtns.className = 'btn-group row';
   const vaultBtn = document.createElement('button');
   vaultBtn.textContent = 'Loading vault state...';
   vaultBtn.disabled = true;

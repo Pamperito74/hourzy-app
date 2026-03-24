@@ -721,8 +721,15 @@ button.sm {
 
 .btn-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
+  align-items: flex-start;
+}
+
+/* Inline row variant for small sibling actions */
+.btn-group.row {
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
 }
 
